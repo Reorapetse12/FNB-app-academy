@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewpoint" content="width=device-width, initial-scale=1.0">
+        <title>Add Contact</title>
+    </head>
+    <body>
+        <form id="newContact">
+            <label for="firstname">Firstname:</label>
+            <input type="text" id="firstname" name="firstname" required><br/>
+            <label for="lastname">Lastname:</label>
+            <input type="text" id="lastname" name="lastname" required><br/>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" required><br/>
+            <label for="mobile">Number:</label>
+            <input type="text" id="mobile" name="mobile" required><br/>
+            <label for="avatar">Upload Image:</label>
+            <input type="file" id="avatar" name="avatar" accept="image/*"><br/>
+            <button type="submit" id="submit">Submit</button>
+
+        </form>
+
+        <br/>
+
+        <a href="index.html"><Button>Home</Button></a>
+
+        <script src="config.js"></script>
+        <script>
+
+            document.getElementById("submit").addEventListener("click", submitData);
+
+            function submitData(e) {
+                e.preventDefault();
+
+                const form = new FormData(document.querySelector("#newContact"));
+                form.append("apikey", apiKey);
+
+                fetch(rootPath + "controller/insert-contact/", {
+                    method: "POST",
+                    headers: {"Accept": "application/json, *, *"},
+                    body: form
+                })
+                .then(function(response) {
+                    return response.text();
+                })
+                .then(function(data) {
+                    if(data =="1") {
+                        alert("Contact has been added succesfully");
+                        window.open("index.html", "_self");
+                    } else {
+                        alert("Contact has not been added succesfully." + data);
+                        window.open("index.html", "_self");
+                    }
+                })
+            }
+
+        </script>
+    </body>
+</html>
